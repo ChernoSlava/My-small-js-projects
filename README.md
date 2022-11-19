@@ -11,3 +11,5 @@
 1) Drum kit - The first project allows the user to try himself as a drummer. In the center of the screen are the keys, interacting with which the user will hear the sounds of the drum kit.
 
 2) Simple clock - the project is a simple analog clock.
+
+3) CSS Variables - the project include foto and three filters.
