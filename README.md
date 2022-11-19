@@ -1,4 +1,4 @@
-# My-smoll-js-projects
+# My-small-js-projects
 
 ## This repository is designed to practice interesting js projects.
 
