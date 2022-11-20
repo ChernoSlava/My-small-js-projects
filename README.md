@@ -1,4 +1,4 @@
-# My-smoll-js-projects
+# My small js projects
 
 ## This repository is designed to practice interesting js projects.
 
@@ -13,3 +13,5 @@
 2) Simple clock - the project is a simple analog clock.
 
 3) CSS Variables - the project include foto and three filters.
+
+4) Flex panel Gallery - the project is a bright and pretty panel with floating text and clickable images.
