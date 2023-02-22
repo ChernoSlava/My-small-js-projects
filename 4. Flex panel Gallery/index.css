@@ -56,6 +56,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 .panel > *:first-child { transform: translateY(-100%); }
 .panel.open-active > *:first-child { transform: translateY(0); }
