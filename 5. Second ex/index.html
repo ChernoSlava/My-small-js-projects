@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .closePopup {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+        }
+        .popup div {
+            margin-bottom: 10px;
+        }
+        .popupSelecter {
+            display: block;
+        }
+    </style>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+    <button class="openPopup">Open popup</button>
+    <ul class="content"></ul>
+    <div class="popup">
+        <span class="closePopup">X</span>
+        <div>
+            <input type="text" name="name" id="firtsName">
+            <input type="text" name="salary" id="secondName">
+            <input type="checkbox" id="checkbox" >
+        </div>
+        <button onclick="addNewElement()">Add</button>
+    </div>
+
+    <template id="listItemTemplate">
+        <li>
+            <span class="name"></span>
+            <span class="salary"></span>
+        </li>
+    </template>
+
+    <script defer>
+        let listItem;
+        const popupBox = document.querySelector('.popup');
+        const content = document.querySelector('.content');
+        const listItemTemplate = document.getElementById('listItemTemplate');
+
+        const openBtn = document.querySelector('.openPopup').addEventListener('click', openPopup);
+        const closeBtn = document.querySelector('.closePopup').addEventListener('click', closePopup);
+
+        function openPopup() {
+            popupBox.classList.add('popupSelecter');
+        }
+        function closePopup() {
+            popupBox.classList.remove('popupSelecter');
+        }
+        function sanitizeInput(input) {
+            return input.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+ 
+        function cloneItem() {
+            const clone = document.importNode(listItemTemplate.content, true);
+            listItem = clone.querySelector('li');
+            return listItem;
+        }
+
+        function addNewElement() {
+            const firstName = sanitizeInput(document.getElementById("firtsName").value.trim());
+            const salary = sanitizeInput(document.getElementById("secondName").value.trim());
+            const isChecked = document.getElementById("checkbox").checked;
+
+            if (firstName === "" || salary === "") {
+                alert("Please enter both first name and family name!");
+                return;
+            }
+
+            cloneItem();
+            listItem.querySelector('.name').textContent = firstName;
+            listItem.querySelector('.salary').textContent = salary;
+            
+            const newDiv = document.createElement("div");
+            newDiv.classList.add('checker');
+            listItem.appendChild(newDiv);
+            
+            if (isChecked) {
+                listItem.querySelector('.checker').textContent = 'I was checked';
+            } else {
+                listItem.querySelector('.checker').textContent = 'I wasn"t checked';
+            }
+
+            content.appendChild(listItem);
+
+            const storedData = JSON.parse(localStorage.getItem('data')) || {};
+            storedData[firstName] = salary;
+
+            localStorage.setItem('data', JSON.stringify(storedData));
+
+            closePopup();
+        }
+        
+        function rendereDataFromStorage() {
+            const storedData = JSON.parse(localStorage.getItem('data'));
+
+           if (storedData) {
+                for (const firstName in storedData) {
+                    if (storedData.hasOwnProperty(firstName)) {
+                        const salary = storedData[firstName];
+                        cloneItem();
+                        listItem.querySelector('.name').textContent = firstName;
+                        listItem.querySelector('.salary').textContent = salary;
+                        content.appendChild(listItem);
+                    }
+                }
+            } else {
+                console.log("No data in localStorage");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", rendereDataFromStorage);
+    </script>
+</body>
+</html>
